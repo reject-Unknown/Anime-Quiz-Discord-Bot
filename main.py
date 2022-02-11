@@ -120,7 +120,7 @@ async def AnimeQuiz(ctx, mode="Hard"):
                 else:
                     Embed = discord.Embed(title="\U0000274C Incorrect! Game Over!", description="**Your Score**: " + str(
                         Score) + "\nCorrect Answer is number " + f'**{correctNum}**\n**From**: [' + str(
-                        Play[correctNum - 1]["name"]) + "](" + Play[correctNum - 1]["url"] + ")",
+                        Play[correctNum - 1]["anime"]) + "](" + Play[correctNum - 1]["url"] + ")",
                                           color=discord.Colour.red())
                     await ctx.send("", embed=Embed)
                     thread_update = Thread(target=update_collection, args=(Score, ctx, collection_name))
@@ -166,7 +166,7 @@ async def dance(ctx):
 @client.command()
 async def oppai(ctx):
     oppai = ["images/oppai/oppai1.gif", "images/oppai/oppai2.gif", "images/oppai/oppai3.gif","images/oppai/oppai4.gif"]
-    num = np.random.randint(0, 3)
+    num = np.random.randint(0, 4)
     await ctx.send(file=discord.File(oppai[num]))
 
 
