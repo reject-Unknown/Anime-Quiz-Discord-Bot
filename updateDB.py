@@ -33,6 +33,9 @@ for i in tqdm(range(1, 7)):
         except KeyError:
             print("passed")
             pass
+        except ConnectionRefusedError:
+            print("passed")
+            pass
         for character in characters:
             if character['role'] == 'Main':  # if it is main character
                 if db["Characters"].count_documents({"id": character["mal_id"]}) == 0:  # And it not exist in DB
