@@ -19,7 +19,7 @@ headers = {'User-Agent': 'My User Agent 1.0'}  # Adding headers to request
 
 db["Characters"].delete_many({})
 for i in tqdm(range(1, 7)):
-    json_text = requests.get(TOP_API + str(i), headers)  # Send request and gets information about 'i' page of top
+    json_text = requests.get(TOP_API + str(i) + "/bypopularity", headers)  # Send request and gets information about 'i' page of top
     characters_table = db["Characters"]  # Connect to Characters collection
     json_object = json.loads(json_text.text)
     top = json_object['top']  # Gets top anime list

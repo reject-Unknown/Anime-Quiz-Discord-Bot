@@ -55,7 +55,7 @@ async def leaderboard(ctx, mode="Hard", page=1):
 
 def update_collection(Score, ctx, collection_name):
     if Score > 0:
-        list_board = list(db[collection_name].find({}).sort("count"))
+        list_board = list(db[collection_name].find({}).sort("count", pymongo.DESCENDING))
         if len(list_board) < 20:
             if len(list(db[collection_name].find({"name": ctx.message.author.name, "score": Score}))) == 0:
                 db[collection_name].insert_one({"name": str(ctx.message.author.name), "score": Score})
