@@ -133,7 +133,7 @@ async def AnimeQuiz(ctx, mode="Hard"):
                     thread_update.start()
                     gameOver = True
                     Answer = True
-    except asyncio.exceptions.TimeoutError:
+    except asyncio.TimeoutError:
         Embed = discord.Embed(title="\U000023F2 Time is up! Game Over", description="**Your Score**: " + str(
             Score) + "\nCorrect Answer is number " + f'**{correctNum}**\n**From**: [' + str(
             Play[correctNum - 1]["anime"]) + "](" + Play[correctNum - 1]["url"] + ")",
