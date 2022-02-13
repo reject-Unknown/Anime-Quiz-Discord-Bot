@@ -105,7 +105,7 @@ async def AnimeQuiz(ctx, mode="Hard"):
             collection_name = f"{LEADERBOARD}_{mode.lower()}_{str(guild_id)}"
             while not Answer:
                 def is_correct(m):
-                    return m.author == ctx.author and m.content.isdigit()
+                    return m.author == ctx.author and m.content.isdigit() and m.channel == ctx.channel
 
                 msg = await client.wait_for('message', check=is_correct, timeout=20)
                 mesaga = msg.content
