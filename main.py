@@ -4,6 +4,8 @@ import numpy as np
 import json
 import random
 import asyncio
+
+import youtube_dl
 from discord.ext import commands
 import requests
 import pymongo
@@ -11,6 +13,9 @@ from pymongo import MongoClient
 from decouple import config
 from threading import Thread
 import time
+from discord.utils import get
+from discord import FFmpegPCMAudio
+from discord import TextChannel
 
 LEADERBOARD = "LeaderBoard"
 
@@ -31,7 +36,8 @@ difficult = {"hard": 3, "medium": 2, "easy": 1}
 @client.command()
 async def leaderboard(ctx, mode="Hard", page=1):
     difficulty = mode.lower()
-    leader_board = list(db[f"{LEADERBOARD}_{difficulty}_{ctx.message.guild.id}"].find({}).sort("score", pymongo.DESCENDING))
+    leader_board = list(
+        db[f"{LEADERBOARD}_{difficulty}_{ctx.message.guild.id}"].find({}).sort("score", pymongo.DESCENDING))
     msg = ""
     size = len(leader_board)
     if page > size / 10 + 1:
@@ -55,7 +61,7 @@ async def leaderboard(ctx, mode="Hard", page=1):
 
 def update_collection(Score, ctx, collection_name):
     if Score > 0:
-        list_board = list(db[collection_name].find({}).sort("count", pymongo.DESCENDING))
+        list_board = list(db[collection_name].find({}).sort("score", pymongo.DESCENDING))
         if len(list_board) < 20:
             if len(list(db[collection_name].find({"name": ctx.message.author.name, "score": Score}))) == 0:
                 db[collection_name].insert_one({"name": str(ctx.message.author.name), "score": Score})
@@ -63,7 +69,6 @@ def update_collection(Score, ctx, collection_name):
             if len(list(db[collection_name].find({"name": ctx.message.author.name, "score": Score}))) == 0:
                 db[collection_name].delete_one(list_board[19])
                 db[collection_name].insert_one({"name": str(ctx.message.author.name), "score": Score})
-
 
 
 @client.command(pass_context=True)
@@ -118,9 +123,10 @@ async def AnimeQuiz(ctx, mode="Hard"):
                         thread_update.start()
                         gameOver = True
                 else:
-                    Embed = discord.Embed(title="\U0000274C Incorrect! Game Over!", description="**Your Score**: " + str(
-                        Score) + "\nCorrect Answer is number " + f'**{correctNum}**\n**From**: [' + str(
-                        Play[correctNum - 1]["anime"]) + "](" + Play[correctNum - 1]["url"] + ")",
+                    Embed = discord.Embed(title="\U0000274C Incorrect! Game Over!",
+                                          description="**Your Score**: " + str(
+                                              Score) + "\nCorrect Answer is number " + f'**{correctNum}**\n**From**: [' + str(
+                                              Play[correctNum - 1]["anime"]) + "](" + Play[correctNum - 1]["url"] + ")",
                                           color=discord.Colour.red())
                     await ctx.send("", embed=Embed)
                     thread_update = Thread(target=update_collection, args=(Score, ctx, collection_name))
@@ -142,6 +148,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send('This command is on a **%.2f seconds** cooldown' % error.retry_after)
     raise error  # re-raise the error so all the errors will still show up in console
+
 
 @client.command()
 async def python(ctx):
@@ -165,7 +172,7 @@ async def dance(ctx):
 
 @client.command()
 async def oppai(ctx):
-    oppai = ["images/oppai/oppai1.gif", "images/oppai/oppai2.gif", "images/oppai/oppai3.gif","images/oppai/oppai4.gif"]
+    oppai = ["images/oppai/oppai1.gif", "images/oppai/oppai2.gif", "images/oppai/oppai3.gif", "images/oppai/oppai4.gif"]
     num = np.random.randint(0, 4)
     await ctx.send(file=discord.File(oppai[num]))
 
@@ -232,6 +239,18 @@ async def Gay(ctx, *, id):
         await ctx.send('', embed=em)
         accept_decline = await ctx.send('', embed=e)
         await accept_decline.add_reaction(client.get_emoji(778347488565264394))
+
+
+@client.command(pass_context=True)
+async def play(ctx, url):
+    YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist': 'True'}
+
+    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+        info = ydl.extract_info(url, download=False)
+    URL = info['formats'][0]['url']
+    voice = get(client.voice_clients, guild=ctx.guild)
+    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+    voice.play(FFmpegPCMAudio(executable = "F:\Downloads\\bin\\ffmpeg.exe", source=URL, **FFMPEG_OPTIONS))
 
 
 client.run(config('token', default=''))
