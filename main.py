@@ -186,11 +186,11 @@ async def sad(ctx):
 
 @client.command()
 async def ктобылпидоромпозавчера(ctx):
-    user = await client.fetch_user('238990604208570369')
+    # user = await client.fetch_user('238990604208570369')
     await ctx.send("Вспоманаю...")
     await ctx.send("Смотрю записи...")
     await ctx.send("А,точно!")
-    await ctx.send("Пидoром позачеравчера был " + f'{user.mention}')
+    await ctx.send("Пидoром позачеравчера был " + f'{ctx.message.author.mention}')
 
 
 @client.command()
