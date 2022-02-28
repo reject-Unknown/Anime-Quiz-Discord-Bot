@@ -189,7 +189,7 @@ async def ктобылпидоромпозавчера(ctx):
     users = ['275677557595308033', '459385814984687636', '706048398171570199', '194561202888638465',
              '375552698264584202', '295538077080748032']
 
-    user = await client.fetch_user(np.random.randint(0,6))
+    user = await client.fetch_user(users[np.random.randint(0,6)])
     await ctx.send("Вспоминаю...")
     await ctx.send("Смотрю записи...")
     await ctx.send("А,точно!")
