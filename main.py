@@ -186,11 +186,14 @@ async def sad(ctx):
 
 @client.command()
 async def ктобылпидоромпозавчера(ctx):
-    # user = await client.fetch_user('238990604208570369')
-    await ctx.send("Вспоманаю...")
+    users = ['275677557595308033', '459385814984687636', '706048398171570199', '194561202888638465',
+             '375552698264584202', '295538077080748032']
+
+    user = await client.fetch_user(np.random.randint(0,6))
+    await ctx.send("Вспоминаю...")
     await ctx.send("Смотрю записи...")
     await ctx.send("А,точно!")
-    await ctx.send("Пидoром позачеравчера был " + f'{ctx.message.author.mention}')
+    await ctx.send("Пидoром пидоромпозачера был " + f'{user.mention}')
 
 
 @client.command()
@@ -250,7 +253,7 @@ async def play(ctx, url):
     URL = info['formats'][0]['url']
     voice = get(client.voice_clients, guild=ctx.guild)
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-    voice.play(FFmpegPCMAudio(executable = "F:\Downloads\\bin\\ffmpeg.exe", source=URL, **FFMPEG_OPTIONS))
+    voice.play(FFmpegPCMAudio(executable="F:\Downloads\\bin\\ffmpeg.exe", source=URL, **FFMPEG_OPTIONS))
 
 
 client.run(config('token', default=''))
