@@ -105,11 +105,12 @@ async def AnimeQuiz(ctx, mode="Hard"):
             collection_name = f"{LEADERBOARD}_{mode.lower()}_{str(guild_id)}"
             while not Answer:
                 def is_correct(m):
-                    return m.author == ctx.author and m.content.isdigit() and m.channel == ctx.channel
+                    return m.author == ctx.author and m.content.isdigit() and m.channel == ctx.channel and int(m.content) in range(1,5)
 
                 msg = await client.wait_for('message', check=is_correct, timeout=20)
                 mesaga = msg.content
-                if int(mesaga) == correctNum:
+                user_number = int(mesaga)
+                if user_number == correctNum:
                     await ctx.send(str(emoji) + " Correct! You won **100 points** !")
                     number_of_question += 1
                     Score += 100
@@ -122,7 +123,7 @@ async def AnimeQuiz(ctx, mode="Hard"):
                         thread_update = Thread(target=update_collection, args=(Score, ctx, collection_name))
                         thread_update.start()
                         gameOver = True
-                else:
+                else
                     Embed = discord.Embed(title="\U0000274C Incorrect! Game Over!",
                                           description="**Your Score**: " + str(
                                               Score) + "\nCorrect Answer is number " + f'**{correctNum}**\n**From**: [' + str(
