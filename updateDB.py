@@ -8,7 +8,7 @@ import time
 from tqdm import tqdm
 
 cluster = MongoClient(
-    f"mongodb+srv://DanSprat:{config('password', default='')}@cluster0.p0z6z.mongodb.net/QuizDB?retryWrites=true&w=majority")
+    f"mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4")
 db = cluster["QuizDB"]
 
 ANIME_API = 'https://api.jikan.moe/v3/anime/'  # Common API
