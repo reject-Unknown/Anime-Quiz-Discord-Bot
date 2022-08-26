@@ -123,7 +123,7 @@ async def AnimeQuiz(ctx, mode="Hard"):
                         thread_update = Thread(target=update_collection, args=(Score, ctx, collection_name))
                         thread_update.start()
                         gameOver = True
-                else
+                else:
                     Embed = discord.Embed(title="\U0000274C Incorrect! Game Over!",
                                           description="**Your Score**: " + str(
                                               Score) + "\nCorrect Answer is number " + f'**{correctNum}**\n**From**: [' + str(
